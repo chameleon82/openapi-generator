@@ -1,0 +1,25 @@
+{{>licenseInfo}}
+package {{package}}
+
+{{#imports}}import {{import}}
+{{/imports}}
+
+import javax.ws.rs.*;
+
+{{#useSwaggerAnnotations}}
+    import io.swagger.annotations.*;
+{{/useSwaggerAnnotations}}
+
+
+@Path("/{{{baseName}}}"){{#useSwaggerAnnotations}}
+    @Api(description = "the {{{baseName}}} API"){{/useSwaggerAnnotations}}{{#hasConsumes}}
+    @Consumes(Array( {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} )){{/hasConsumes}}{{#hasProduces}}
+    @Produces(Array( {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} )){{/hasProduces}}
+trait {{classname}} {
+{{#operations}}
+{{#operation}}
+
+    {{>apiInterface}}
+{{/operation}}
+    }
+{{/operations}}

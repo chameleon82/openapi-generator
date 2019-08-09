@@ -1,0 +1,16 @@
+{{>licenseInfo}}
+package {{package}}
+
+{{#imports}}import {{import}}
+{{/imports}}
+
+{{#operations}}
+class {{classname}} extends AbstractApi (
+) {
+
+{{#operation}}
+    def {{operationId}} = {}
+{{/operation}}
+
+}
+{{/operations}}

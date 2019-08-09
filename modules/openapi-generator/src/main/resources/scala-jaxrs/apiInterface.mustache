@@ -1,0 +1,35 @@
+@{{httpMethod}}{{#subresourceOperation}}
+    @Path("{{{path}}}"){{/subresourceOperation}}{{#hasConsumes}}
+    @Consumes(Array( {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} )){{/hasConsumes}}{{#hasProduces}}
+    @Produces(Array( {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} )){{/hasProduces}}{{#useSwaggerAnnotations}}
+    @Operation(
+      value = "{{{summary}}}",
+      notes = "{{{notes}}}"{{#hasAuthMethods}},
+      tags={ {{#vendorExtensions.x-tags}}"{{tag}}"{{#hasMore}}, {{/hasMore}}{{/vendorExtensions.x-tags}},
+      responses = Array(
+{{#responses}}
+          new ApiResponse(
+            responseCode = {{{code}}},
+            message = {{{message}}},
+            description = {{{description}}},
+            content = Array(
+              new Content(
+                schema = new Schema(
+                  implementation = classOf[{{{baseType}}}]
+                )
+              )
+            )
+      ),{{/responses}}
+    )
+
+    //  authorizations = {
+    //{{#authMethods}}@Authorization(value = "{{name}}"{{#isOAuth}}, scopes = {
+    //{{#scopes}}@AuthorizationScope(scope = "{{scope}}", description = "{{description}}"){{#hasMore}},
+    //{{/hasMore}}{{/scopes}}
+    //}{{/isOAuth}}){{#hasMore}},
+    //{{/hasMore}}{{/authMethods}}
+    //}{{/hasAuthMethods}}, }
+
+//    @ApiResponses(value = { {{#responses}}
+//        @ApiResponse(code = {{{code}}}, message = "{{{message}}}", response = {{{baseType}}}.class{{#returnContainer}}, responseContainer = "{{{returnContainer}}}"{{/returnContainer}}){{#hasMore}},{{/hasMore}}{{/responses}} }){{/useSwaggerAnnotations}}
+{{#returnResponse}}Response{{/returnResponse}}{{^returnResponse}}{{{returnType}}}{{/returnResponse}} {{nickname}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}})

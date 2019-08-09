@@ -1,0 +1,10 @@
+{{>licenseInfo}}
+package {{apiPackage}}
+
+import akka.http.scaladsl.server._
+
+abstract class AbstractApi extends Directives {
+
+  def routes: Route
+
+}
