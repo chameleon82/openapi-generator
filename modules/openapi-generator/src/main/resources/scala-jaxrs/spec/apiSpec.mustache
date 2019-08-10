@@ -4,22 +4,25 @@ package {{package}}
 {{#imports}}import {{import}}
 {{/imports}}
 
-import javax.ws.rs.*;
+import javax.ws.rs._
+import java.io.InputStream
+{{#useSwaggerAnnotations}}import io.swagger.v3.oas.annotations._
+import io.swagger.v3.oas.annotations.enums._
+import io.swagger.v3.oas.annotations.media.{Content, Schema}
+import io.swagger.v3.oas.annotations.responses
+import io.swagger.v3.oas.annotations.tags.{Tag, Tags}
+import io.swagger.v3.oas.annotations.security.{SecurityRequirement, SecurityRequirements}
 
-{{#useSwaggerAnnotations}}
-    import io.swagger.annotations.*;
 {{/useSwaggerAnnotations}}
 
 
-@Path("/{{{baseName}}}"){{#useSwaggerAnnotations}}
-    @Api(description = "the {{{baseName}}} API"){{/useSwaggerAnnotations}}{{#hasConsumes}}
+@Path("/{{{baseName}}}"){{#hasConsumes}}
     @Consumes(Array( {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} )){{/hasConsumes}}{{#hasProduces}}
     @Produces(Array( {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} )){{/hasProduces}}
-trait {{classname}} {
+trait {{classname}}Spec {
 {{#operations}}
 {{#operation}}
-
-    {{>apiInterface}}
+{{>apiInterface}}
 {{/operation}}
-    }
+}
 {{/operations}}

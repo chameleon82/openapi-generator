@@ -16,351 +16,280 @@ import org.openapitools.server.model.ApiResponse
 import java.io.File
 import org.openapitools.server.model.Pet
 
-import javax.ws.rs.*;
+import javax.ws.rs._
+import java.io.InputStream
+import io.swagger.v3.oas.annotations._
+import io.swagger.v3.oas.annotations.enums._
+import io.swagger.v3.oas.annotations.media.{Content, Schema}
+import io.swagger.v3.oas.annotations.responses
+import io.swagger.v3.oas.annotations.tags.{Tag, Tags}
+import io.swagger.v3.oas.annotations.security.{SecurityRequirement, SecurityRequirements}
 
-    import io.swagger.annotations.*;
 
 
-@Path("/Pet")
-    @Api(description = "the Pet API")
-trait PetApi {
+@Path("/pet")
+trait PetApiSpec {
 
-    @POST
-    @Consumes(Array( "application/json", "application/xml" ))
-    @Operation(
-      value = "Add a new pet to the store",
-      notes = "",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 405,
-            message = Invalid input,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  @POST
+  @Consumes(Array("application/json", "application/xml"))
+  @Operation(
+    summary = "Add a new pet to the store",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "pet", description = "Everything about your Pets"),
     )
-
-    //  authorizations = {
-    //@Authorization(value = "petstore_auth", scopes = {
-    //@AuthorizationScope(scope = "write:pets", description = "modify pets in your account"),
-    //@AuthorizationScope(scope = "read:pets", description = "read your pets")
-    //})
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 405, message = "Invalid input", response = .class) })
- addPet(@ApiParam(value = "Pet object that needs to be added to the store" ,required=true) Pet pet
-)
-
-    @DELETE
-    @Operation(
-      value = "Deletes a pet",
-      notes = "",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 400,
-            message = Invalid pet value,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key", scopes = Array("write:pets","read:pets"))
     )
-
-    //  authorizations = {
-    //@Authorization(value = "petstore_auth", scopes = {
-    //@AuthorizationScope(scope = "write:pets", description = "modify pets in your account"),
-    //@AuthorizationScope(scope = "read:pets", description = "read your pets")
-    //})
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 400, message = "Invalid pet value", response = .class) })
- deletePet(@ApiParam(value = "Pet id to delete",required=true) @PathParam("petId") Long petId
-,@ApiParam(value = "" )@HeaderParam("api_key") String apiKey
-)
-
-    @GET
-    @Produces(Array( "application/xml", "application/json" ))
-    @Operation(
-      value = "Finds Pets by status",
-      notes = "Multiple status values can be provided with comma separated strings",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 200,
-            message = successful operation,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[Pet]
-                )
-              )
-            )
-      ),          new ApiResponse(
-            responseCode = 400,
-            message = Invalid status value,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "405",
+        description = "Invalid input"
+      )
     )
+  )
+  def addPet(
+      @Parameter(name = "Pet object that needs to be added to the store", in = ParameterIn.DEFAULT, required = true)  pet:Pet
+  ): Unit
 
-    //  authorizations = {
-    //@Authorization(value = "petstore_auth", scopes = {
-    //@AuthorizationScope(scope = "read:pets", description = "read your pets")
-    //})
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 200, message = "successful operation", response = Pet.class, responseContainer = "array"),
-//        @ApiResponse(code = 400, message = "Invalid status value", response = .class, responseContainer = "array") })
-List[Pet] findPetsByStatus(@ApiParam(value = "Status values that need to be considered for filter",required=true)@QueryParam("status") List[String] status
-)
-
-    @GET
-    @Produces(Array( "application/xml", "application/json" ))
-    @Operation(
-      value = "Finds Pets by tags",
-      notes = "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 200,
-            message = successful operation,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[Pet]
-                )
-              )
-            )
-      ),          new ApiResponse(
-            responseCode = 400,
-            message = Invalid tag value,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  @DELETE
+  @Path("/{petId}")
+  @Operation(
+    summary = "Deletes a pet",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "pet", description = "Everything about your Pets"),
     )
-
-    //  authorizations = {
-    //@Authorization(value = "petstore_auth", scopes = {
-    //@AuthorizationScope(scope = "read:pets", description = "read your pets")
-    //})
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 200, message = "successful operation", response = Pet.class, responseContainer = "array"),
-//        @ApiResponse(code = 400, message = "Invalid tag value", response = .class, responseContainer = "array") })
-List[Pet] findPetsByTags(@ApiParam(value = "Tags to filter by",required=true)@QueryParam("tags") List[String] tags
-,@ApiParam(value = "Maximum number of items to return")@QueryParam("maxCount") Integer maxCount
-)
-
-    @GET
-    @Produces(Array( "application/xml", "application/json" ))
-    @Operation(
-      value = "Find pet by ID",
-      notes = "Returns a single pet",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 200,
-            message = successful operation,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[Pet]
-                )
-              )
-            )
-      ),          new ApiResponse(
-            responseCode = 400,
-            message = Invalid ID supplied,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),          new ApiResponse(
-            responseCode = 404,
-            message = Pet not found,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key", scopes = Array("write:pets","read:pets"))
     )
-
-    //  authorizations = {
-    //@Authorization(value = "api_key")
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 200, message = "successful operation", response = Pet.class),
-//        @ApiResponse(code = 400, message = "Invalid ID supplied", response = .class),
-//        @ApiResponse(code = 404, message = "Pet not found", response = .class) })
-Pet getPetById(@ApiParam(value = "ID of pet to return",required=true) @PathParam("petId") Long petId
-)
-
-    @PUT
-    @Consumes(Array( "application/json", "application/xml" ))
-    @Operation(
-      value = "Update an existing pet",
-      notes = "",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 400,
-            message = Invalid ID supplied,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),          new ApiResponse(
-            responseCode = 404,
-            message = Pet not found,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),          new ApiResponse(
-            responseCode = 405,
-            message = Validation exception,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid pet value"
+      )
     )
+  )
+  def deletePet(
+      @Parameter(name = "petId", in = ParameterIn.PATH , required = true, description = "Pet id to delete") @PathParam("petId") petId:Long, 
+      @Parameter(name = "", in = ParameterIn.HEADER)@HeaderParam("api_key") apiKey:String
+  ): Unit
 
-    //  authorizations = {
-    //@Authorization(value = "petstore_auth", scopes = {
-    //@AuthorizationScope(scope = "write:pets", description = "modify pets in your account"),
-    //@AuthorizationScope(scope = "read:pets", description = "read your pets")
-    //})
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 400, message = "Invalid ID supplied", response = .class),
-//        @ApiResponse(code = 404, message = "Pet not found", response = .class),
-//        @ApiResponse(code = 405, message = "Validation exception", response = .class) })
- updatePet(@ApiParam(value = "Pet object that needs to be added to the store" ,required=true) Pet pet
-)
-
-    @POST
-    @Consumes(Array( "application/x-www-form-urlencoded" ))
-    @Operation(
-      value = "Updates a pet in the store with form data",
-      notes = "",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 405,
-            message = Invalid input,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  @GET
+  @Path("/findByStatus")
+  @Produces(Array("application/xml", "application/json"))
+  @Operation(
+    summary = "Finds Pets by status",
+    description = "Multiple status values can be provided with comma separated strings",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "pet", description = "Everything about your Pets"),
     )
-
-    //  authorizations = {
-    //@Authorization(value = "petstore_auth", scopes = {
-    //@AuthorizationScope(scope = "write:pets", description = "modify pets in your account"),
-    //@AuthorizationScope(scope = "read:pets", description = "read your pets")
-    //})
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 405, message = "Invalid input", response = .class) })
- updatePetWithForm(@ApiParam(value = "ID of pet that needs to be updated",required=true) @PathParam("petId") Long petId
-,@ApiParam(value = "Updated name of the pet")  @FormParam("name")  String name
-,@ApiParam(value = "Updated status of the pet")  @FormParam("status")  String status
-)
-
-    @POST
-    @Consumes(Array( "multipart/form-data" ))
-    @Produces(Array( "application/json" ))
-    @Operation(
-      value = "uploads an image",
-      notes = "",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 200,
-            message = successful operation,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[ApiResponse]
-                )
-              )
-            )
-      ),
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key", scopes = Array("read:pets"))
     )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = Array(new Content(schema = new Schema(implementation = classOf[Pet])))
+      ), 
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid status value"
+      )
+    )
+  )
+  def findPetsByStatus(
+      @Parameter(name = "Status values that need to be considered for filter", in = ParameterIn.QUERY,required=true)@QueryParam("status") status:List[String]
+  ): List[Pet]
 
-    //  authorizations = {
-    //@Authorization(value = "petstore_auth", scopes = {
-    //@AuthorizationScope(scope = "write:pets", description = "modify pets in your account"),
-    //@AuthorizationScope(scope = "read:pets", description = "read your pets")
-    //})
-    //}, }
+  @GET
+  @Path("/findByTags")
+  @Produces(Array("application/xml", "application/json"))
+  @Operation(
+    summary = "Finds Pets by tags",
+    description = "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "pet", description = "Everything about your Pets"),
+    )
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key", scopes = Array("read:pets"))
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = Array(new Content(schema = new Schema(implementation = classOf[Pet])))
+      ), 
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid tag value"
+      )
+    )
+  )
+  def findPetsByTags(
+      @Parameter(name = "Tags to filter by", in = ParameterIn.QUERY,required=true)@QueryParam("tags") tags:List[String], 
+      @Parameter(name = "Maximum number of items to return", in = ParameterIn.QUERY)@QueryParam("maxCount") maxCount:Integer
+  ): List[Pet]
 
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 200, message = "successful operation", response = ApiResponse.class) })
-ApiResponse uploadFile(@ApiParam(value = "ID of pet to update",required=true) @PathParam("petId") Long petId
-,@ApiParam(value = "Additional data to pass to server")  @FormParam("additionalMetadata")  String additionalMetadata
-,
-    @FormDataParam("file") InputStream fileInputStream,
-    @FormDataParam("file") FormDataContentDisposition fileDetail
-)
-    }
+  @GET
+  @Path("/{petId}")
+  @Produces(Array("application/xml", "application/json"))
+  @Operation(
+    summary = "Find pet by ID",
+    description = "Returns a single pet",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "pet", description = "Everything about your Pets"),
+    )
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key")
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = Array(new Content(schema = new Schema(implementation = classOf[Pet])))
+      ), 
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid ID supplied"
+      ), 
+      new responses.ApiResponse(
+        responseCode = "404",
+        description = "Pet not found"
+      )
+    )
+  )
+  def getPetById(
+      @Parameter(name = "petId", in = ParameterIn.PATH , required = true, description = "ID of pet to return") @PathParam("petId") petId:Long
+  ): Pet
+
+  @PUT
+  @Consumes(Array("application/json", "application/xml"))
+  @Operation(
+    summary = "Update an existing pet",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "pet", description = "Everything about your Pets"),
+    )
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key", scopes = Array("write:pets","read:pets"))
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid ID supplied"
+      ), 
+      new responses.ApiResponse(
+        responseCode = "404",
+        description = "Pet not found"
+      ), 
+      new responses.ApiResponse(
+        responseCode = "405",
+        description = "Validation exception"
+      )
+    )
+  )
+  def updatePet(
+      @Parameter(name = "Pet object that needs to be added to the store", in = ParameterIn.DEFAULT, required = true)  pet:Pet
+  ): Unit
+
+  @POST
+  @Path("/{petId}")
+  @Consumes(Array("application/x-www-form-urlencoded"))
+  @Operation(
+    summary = "Updates a pet in the store with form data",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "pet", description = "Everything about your Pets"),
+    )
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key", scopes = Array("write:pets","read:pets"))
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "405",
+        description = "Invalid input"
+      )
+    )
+  )
+  def updatePetWithForm(
+      @Parameter(name = "petId", in = ParameterIn.PATH , required = true, description = "ID of pet that needs to be updated") @PathParam("petId") petId:Long, 
+      @Parameter(name = "Updated name of the pet")  @FormParam("name") name:String, 
+      @Parameter(name = "Updated status of the pet")  @FormParam("status") status:String
+  ): Unit
+
+  @POST
+  @Path("/{petId}/uploadImage")
+  @Consumes(Array("multipart/form-data"))
+  @Produces(Array("application/json"))
+  @Operation(
+    summary = "uploads an image",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "pet", description = "Everything about your Pets"))
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key", scopes = Array("write:pets","read:pets"))
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = Array(new Content(schema = new Schema(implementation = classOf[ApiResponse])))
+      )
+    )
+  )
+  def uploadFile(
+      @Parameter(name = "petId", in = ParameterIn.PATH , required = true, description = "ID of pet to update") @PathParam("petId") petId:Long, 
+      @Parameter(name = "Additional data to pass to server")  @FormParam("additionalMetadata") additionalMetadata:String, 
+      @FormParam("file") fileInputStream: InputStream
+  ): ApiResponse
+}

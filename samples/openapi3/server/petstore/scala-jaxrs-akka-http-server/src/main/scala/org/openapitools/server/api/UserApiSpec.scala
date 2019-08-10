@@ -14,240 +14,258 @@ package org.openapitools.server.api
 
 import org.openapitools.server.model.User
 
-import javax.ws.rs.*;
+import javax.ws.rs._
+import java.io.InputStream
+import io.swagger.v3.oas.annotations._
+import io.swagger.v3.oas.annotations.enums._
+import io.swagger.v3.oas.annotations.media.{Content, Schema}
+import io.swagger.v3.oas.annotations.responses
+import io.swagger.v3.oas.annotations.tags.{Tag, Tags}
+import io.swagger.v3.oas.annotations.security.{SecurityRequirement, SecurityRequirements}
 
-    import io.swagger.annotations.*;
 
 
-@Path("/User")
-    @Api(description = "the User API")
-trait UserApi {
+@Path("/user")
+trait UserApiSpec {
 
-    @POST
-    @Consumes(Array( "application/json" ))
-    @Operation(
-      value = "Create user",
-      notes = "This can only be done by the logged in user.",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 0,
-            message = successful operation,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  @POST
+  @Consumes(Array("application/json"))
+  @Operation(
+    summary = "Create user",
+    description = "This can only be done by the logged in user.",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "user", description = "Operations about user"),
     )
-
-    //  authorizations = {
-    //@Authorization(value = "auth_cookie")
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 0, message = "successful operation", response = .class) })
- createUser(@ApiParam(value = "Created user object" ,required=true) User user
-)
-
-    @POST
-    @Consumes(Array( "application/json" ))
-    @Operation(
-      value = "Creates list of users with given input array",
-      notes = "",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 0,
-            message = successful operation,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key")
     )
-
-    //  authorizations = {
-    //@Authorization(value = "auth_cookie")
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 0, message = "successful operation", response = .class) })
- createUsersWithArrayInput(@ApiParam(value = "List of user object" ,required=true) List[User] user
-)
-
-    @POST
-    @Consumes(Array( "application/json" ))
-    @Operation(
-      value = "Creates list of users with given input array",
-      notes = "",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 0,
-            message = successful operation,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "0",
+        description = "successful operation"
+      )
     )
+  )
+  def createUser(
+      @Parameter(name = "Created user object", in = ParameterIn.DEFAULT, required = true)  user:User
+  ): Unit
 
-    //  authorizations = {
-    //@Authorization(value = "auth_cookie")
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 0, message = "successful operation", response = .class) })
- createUsersWithListInput(@ApiParam(value = "List of user object" ,required=true) List[User] user
-)
-
-    @DELETE
-    @Operation(
-      value = "Delete user",
-      notes = "This can only be done by the logged in user.",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 400,
-            message = Invalid username supplied,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),          new ApiResponse(
-            responseCode = 404,
-            message = User not found,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  @POST
+  @Path("/createWithArray")
+  @Consumes(Array("application/json"))
+  @Operation(
+    summary = "Creates list of users with given input array",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "user", description = "Operations about user"),
     )
-
-    //  authorizations = {
-    //@Authorization(value = "auth_cookie")
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 400, message = "Invalid username supplied", response = .class),
-//        @ApiResponse(code = 404, message = "User not found", response = .class) })
- deleteUser(@ApiParam(value = "The name that needs to be deleted",required=true) @PathParam("username") String username
-)
-
-    @GET
-    @Produces(Array( "application/xml", "application/json" ))
-    @Operation(
-      value = "Get user by user name",
-      notes = "", }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 200, message = "successful operation", response = User.class),
-//        @ApiResponse(code = 400, message = "Invalid username supplied", response = .class),
-//        @ApiResponse(code = 404, message = "User not found", response = .class) })
-User getUserByName(@ApiParam(value = "The name that needs to be fetched. Use user1 for testing.",required=true) @PathParam("username") String username
-)
-
-    @GET
-    @Produces(Array( "application/xml", "application/json" ))
-    @Operation(
-      value = "Logs user into the system",
-      notes = "", }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 200, message = "successful operation", response = String.class),
-//        @ApiResponse(code = 400, message = "Invalid username/password supplied", response = .class) })
-String loginUser(@ApiParam(value = "The user name for login",required=true)@QueryParam("username") String username
-,@ApiParam(value = "The password for login in clear text",required=true)@QueryParam("password") String password
-)
-
-    @GET
-    @Operation(
-      value = "Logs out current logged in user session",
-      notes = "",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 0,
-            message = successful operation,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key")
     )
-
-    //  authorizations = {
-    //@Authorization(value = "auth_cookie")
-    //}, }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 0, message = "successful operation", response = .class) })
- logoutUser()
-
-    @PUT
-    @Consumes(Array( "application/json" ))
-    @Operation(
-      value = "Updated user",
-      notes = "This can only be done by the logged in user.",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 400,
-            message = Invalid user supplied,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),          new ApiResponse(
-            responseCode = 404,
-            message = User not found,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[]
-                )
-              )
-            )
-      ),
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "0",
+        description = "successful operation"
+      )
     )
+  )
+  def createUsersWithArrayInput(
+      @Parameter(name = "List of user object", in = ParameterIn.DEFAULT, required = true)  user:List[User]
+  ): Unit
 
-    //  authorizations = {
-    //@Authorization(value = "auth_cookie")
-    //}, }
+  @POST
+  @Path("/createWithList")
+  @Consumes(Array("application/json"))
+  @Operation(
+    summary = "Creates list of users with given input array",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "user", description = "Operations about user"),
+    )
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key")
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "0",
+        description = "successful operation"
+      )
+    )
+  )
+  def createUsersWithListInput(
+      @Parameter(name = "List of user object", in = ParameterIn.DEFAULT, required = true)  user:List[User]
+  ): Unit
 
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 400, message = "Invalid user supplied", response = .class),
-//        @ApiResponse(code = 404, message = "User not found", response = .class) })
- updateUser(@ApiParam(value = "name that need to be deleted",required=true) @PathParam("username") String username
-,@ApiParam(value = "Updated user object" ,required=true) User user
-)
-    }
+  @DELETE
+  @Path("/{username}")
+  @Operation(
+    summary = "Delete user",
+    description = "This can only be done by the logged in user.",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "user", description = "Operations about user"),
+    )
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key")
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid username supplied"
+      ), 
+      new responses.ApiResponse(
+        responseCode = "404",
+        description = "User not found"
+      )
+    )
+  )
+  def deleteUser(
+      @Parameter(name = "username", in = ParameterIn.PATH , required = true, description = "The name that needs to be deleted") @PathParam("username") username:String
+  ): Unit
+
+  @GET
+  @Path("/{username}")
+  @Produces(Array("application/xml", "application/json"))
+  @Operation(
+    summary = "Get user by user name",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "user", description = "Operations about user"),
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = Array(new Content(schema = new Schema(implementation = classOf[User])))
+      ), 
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid username supplied"
+      ), 
+      new responses.ApiResponse(
+        responseCode = "404",
+        description = "User not found"
+      )
+    )
+  )
+  def getUserByName(
+      @Parameter(name = "username", in = ParameterIn.PATH , required = true, description = "The name that needs to be fetched. Use user1 for testing.") @PathParam("username") username:String
+  ): User
+
+  @GET
+  @Path("/login")
+  @Produces(Array("application/xml", "application/json"))
+  @Operation(
+    summary = "Logs user into the system",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "user", description = "Operations about user"),
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = Array(new Content(schema = new Schema(implementation = classOf[String])))
+      ), 
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid username/password supplied"
+      )
+    )
+  )
+  def loginUser(
+      @Parameter(name = "The user name for login", in = ParameterIn.QUERY,required=true)@QueryParam("username") username:String, 
+      @Parameter(name = "The password for login in clear text", in = ParameterIn.QUERY,required=true)@QueryParam("password") password:String
+  ): String
+
+  @GET
+  @Path("/logout")
+  @Operation(
+    summary = "Logs out current logged in user session",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "user", description = "Operations about user"),
+    )
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key")
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "0",
+        description = "successful operation"
+      )
+    )
+  )
+  def logoutUser(
+  ): Unit
+
+  @PUT
+  @Path("/{username}")
+  @Consumes(Array("application/json"))
+  @Operation(
+    summary = "Updated user",
+    description = "This can only be done by the logged in user.",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "user", description = "Operations about user"))
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key")
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid user supplied"
+      ), 
+      new responses.ApiResponse(
+        responseCode = "404",
+        description = "User not found"
+      )
+    )
+  )
+  def updateUser(
+      @Parameter(name = "username", in = ParameterIn.PATH , required = true, description = "name that need to be deleted") @PathParam("username") username:String, 
+      @Parameter(name = "Updated user object", in = ParameterIn.DEFAULT, required = true)  user:User
+  ): Unit
+}

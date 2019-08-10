@@ -14,78 +14,135 @@ package org.openapitools.server.api
 
 import org.openapitools.server.model.Order
 
-import javax.ws.rs.*;
+import javax.ws.rs._
+import java.io.InputStream
+import io.swagger.v3.oas.annotations._
+import io.swagger.v3.oas.annotations.enums._
+import io.swagger.v3.oas.annotations.media.{Content, Schema}
+import io.swagger.v3.oas.annotations.responses
+import io.swagger.v3.oas.annotations.tags.{Tag, Tags}
+import io.swagger.v3.oas.annotations.security.{SecurityRequirement, SecurityRequirements}
 
-    import io.swagger.annotations.*;
 
 
-@Path("/Store")
-    @Api(description = "the Store API")
-trait StoreApi {
+@Path("/store")
+trait StoreApiSpec {
 
-    @DELETE
-    @Operation(
-      value = "Delete purchase order by ID",
-      notes = "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors", }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 400, message = "Invalid ID supplied", response = .class),
-//        @ApiResponse(code = 404, message = "Order not found", response = .class) })
- deleteOrder(@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathParam("orderId") String orderId
-)
-
-    @GET
-    @Produces(Array( "application/json" ))
-    @Operation(
-      value = "Returns pet inventories by status",
-      notes = "Returns a map of status codes to quantities",
-      tags={ ,
-      responses = Array(
-          new ApiResponse(
-            responseCode = 200,
-            message = successful operation,
-            description = ,
-            content = Array(
-              new Content(
-                schema = new Schema(
-                  implementation = classOf[Integer]
-                )
-              )
-            )
-      ),
+  @DELETE
+  @Path("/order/{orderId}")
+  @Operation(
+    summary = "Delete purchase order by ID",
+    description = "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "store", description = "Access to Petstore orders"),
     )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid ID supplied"
+      ), 
+      new responses.ApiResponse(
+        responseCode = "404",
+        description = "Order not found"
+      )
+    )
+  )
+  def deleteOrder(
+      @Parameter(name = "orderId", in = ParameterIn.PATH , required = true, description = "ID of the order that needs to be deleted") @PathParam("orderId") orderId:String
+  ): Unit
 
-    //  authorizations = {
-    //@Authorization(value = "api_key")
-    //}, }
+  @GET
+  @Path("/inventory")
+  @Produces(Array("application/json"))
+  @Operation(
+    summary = "Returns pet inventories by status",
+    description = "Returns a map of status codes to quantities",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "store", description = "Access to Petstore orders"),
+    )
+  )
+  @SecurityRequirements(
+    value = Array(
+      new SecurityRequirement(name = "api_key")
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = Array(new Content(schema = new Schema(implementation = classOf[Integer])))
+      )
+    )
+  )
+  def getInventory(
+  ): Map[String, Integer]
 
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 200, message = "successful operation", response = Integer.class, responseContainer = "map") })
-Map[String, Integer] getInventory()
+  @GET
+  @Path("/order/{orderId}")
+  @Produces(Array("application/xml", "application/json"))
+  @Operation(
+    summary = "Find purchase order by ID",
+    description = "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "store", description = "Access to Petstore orders"),
+    )
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = Array(new Content(schema = new Schema(implementation = classOf[Order])))
+      ), 
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid ID supplied"
+      ), 
+      new responses.ApiResponse(
+        responseCode = "404",
+        description = "Order not found"
+      )
+    )
+  )
+  def getOrderById(
+      @Parameter(name = "orderId", in = ParameterIn.PATH , required = true, description = "ID of pet that needs to be fetched") @PathParam("orderId") orderId:Long
+  ): Order
 
-    @GET
-    @Produces(Array( "application/xml", "application/json" ))
-    @Operation(
-      value = "Find purchase order by ID",
-      notes = "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions", }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 200, message = "successful operation", response = Order.class),
-//        @ApiResponse(code = 400, message = "Invalid ID supplied", response = .class),
-//        @ApiResponse(code = 404, message = "Order not found", response = .class) })
-Order getOrderById(@ApiParam(value = "ID of pet that needs to be fetched",required=true) @PathParam("orderId") Long orderId
-)
-
-    @POST
-    @Consumes(Array( "application/json" ))
-    @Produces(Array( "application/xml", "application/json" ))
-    @Operation(
-      value = "Place an order for a pet",
-      notes = "", }
-
-//    @ApiResponses(value = { 
-//        @ApiResponse(code = 200, message = "successful operation", response = Order.class),
-//        @ApiResponse(code = 400, message = "Invalid Order", response = .class) })
-Order placeOrder(@ApiParam(value = "order placed for purchasing the pet" ,required=true) Order order
-)
-    }
+  @POST
+  @Path("/order")
+  @Consumes(Array("application/json"))
+  @Produces(Array("application/xml", "application/json"))
+  @Operation(
+    summary = "Place an order for a pet",
+    description = "",
+  )
+  @Tags(
+    value = Array(
+        new Tag(name = "store", description = "Access to Petstore orders"))
+  )
+  @responses.ApiResponses(
+    value = Array(
+      new responses.ApiResponse(
+        responseCode = "200",
+        description = "successful operation",
+        content = Array(new Content(schema = new Schema(implementation = classOf[Order])))
+      ), 
+      new responses.ApiResponse(
+        responseCode = "400",
+        description = "Invalid Order"
+      )
+    )
+  )
+  def placeOrder(
+      @Parameter(name = "order placed for purchasing the pet", in = ParameterIn.DEFAULT, required = true)  order:Order
+  ): Order
+}

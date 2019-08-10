@@ -1,0 +1,26 @@
+{{>licenseInfo}}
+package {{invokerPackage}}
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
+import io.swagger.v3.oas.annotations.info._
+import io.swagger.v3.oas.annotations.tags.Tag
+import io.swagger.v3.oas.annotations.servers.Server
+
+
+{{#openAPI}}@OpenAPIDefinition(
+    info = {{#Info}}new Info(
+    title = "{{title}}",
+    description = "{{{description}}}",
+    version = "{{version}}",{{#license}}
+    license = new License(name = "{{name}}", url = "{{url}}", extensions = Array()),{{/license}}{{#contact}}
+    contact = new Contact(name = "{{name}}", url = "{{url}}", email = "{{email}}"),{{/contact}}
+    termsOfService = "{{termsOfService}}"
+  ){{/Info}},
+  tags = Array({{#tags}}
+    new Tag(name="{{name}}", description = "{{description}}"),{{/tags}}
+  ),
+  servers = Array({{#servers}}
+    new Server(url = "{{url}}", description = "{{{description}}}"){{/servers}}
+  ),
+){{/openAPI}}
+trait OpenApiSpec
