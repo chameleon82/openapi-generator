@@ -17,7 +17,7 @@ import static org.testng.Assert.assertTrue;
 
 public class ScalaJaxrsAkkaHttpServerCodegenModelTest {
 
-    protected AbstractScalaJAXRSCodegen codegen;
+    protected ScalaJAXRSSpecCodegen codegen;
 
     @BeforeMethod
     public void beforeMethod() {

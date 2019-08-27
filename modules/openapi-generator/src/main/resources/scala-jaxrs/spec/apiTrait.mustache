@@ -1,0 +1,33 @@
+
+  @{{httpMethod}}{{#subresourceOperation}}
+  @Path("{{{path}}}"){{/subresourceOperation}}{{#hasConsumes}}
+  @Consumes(Array({{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}})){{/hasConsumes}}{{#hasProduces}}
+  @Produces(Array({{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}})){{/hasProduces}}{{#useSwaggerAnnotations}}
+  @Operation(
+    summary = "{{{summary}}}",
+    description = "{{{notes}}}",
+  )
+  @Tags(
+    value = Array({{#tags}}
+        new Tag(name = "{{name}}", description = "{{description}}"){{#hasMore}},
+    {{/hasMore}}{{/tags}})
+  ){{#hasAuthMethods}}
+  @SecurityRequirements(
+    value = Array({{#authMethods}}
+      new SecurityRequirement(name = "{{name}}"{{#isOAuth}}, scopes = Array({{#scopes}}"{{scope}}"{{#hasMore}},{{/hasMore}}{{/scopes}}){{/isOAuth}})
+    ){{#hasMore}},
+      {{/hasMore}}{{/authMethods}}
+  ){{/hasAuthMethods}}
+  @responses.ApiResponses(
+    value = Array({{#responses}}
+      new responses.ApiResponse(
+        responseCode = "{{{code}}}",
+        description = "{{{message}}}",{{#baseType}}
+        content = Array(new Content({{#isListContainer}}array = new ArraySchema({{/isListContainer}}schema = new Schema(implementation = classOf[{{{baseType}}}]){{#isListContainer}}){{/isListContainer}})){{/baseType}}
+      ){{#hasMore}}, {{/hasMore}}{{/responses}}
+    )
+  ){{/useSwaggerAnnotations}}
+  def {{nickname}}(
+  {{#allParams}}
+      {{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}}, {{/hasMore}}
+{{/allParams}}): T[{{{returnType}}}]

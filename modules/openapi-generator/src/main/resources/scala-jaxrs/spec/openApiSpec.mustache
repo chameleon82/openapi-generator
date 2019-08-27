@@ -1,10 +1,11 @@
 {{>licenseInfo}}
 package {{invokerPackage}}
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition
+import io.swagger.v3.oas.annotations.{ExternalDocumentation, OpenAPIDefinition}
 import io.swagger.v3.oas.annotations.info._
 import io.swagger.v3.oas.annotations.tags.Tag
-import io.swagger.v3.oas.annotations.servers.Server
+import io.swagger.v3.oas.annotations.servers.{Server, ServerVariable}
+import io.swagger.v3.oas.annotations.extensions.{Extension, ExtensionProperty}
 
 
 {{#openAPI}}@OpenAPIDefinition(
@@ -17,10 +18,17 @@ import io.swagger.v3.oas.annotations.servers.Server
     termsOfService = "{{termsOfService}}"
   ){{/Info}},
   tags = Array({{#tags}}
-    new Tag(name="{{name}}", description = "{{description}}"),{{/tags}}
+    new Tag(name = "{{name}}", description = "{{description}}"),{{/tags}}
   ),
   servers = Array({{#servers}}
-    new Server(url = "{{url}}", description = "{{{description}}}"){{/servers}}
-  ),
+    new Server(
+      url = "{{url}}",
+      description = "{{{description}}}"
+    ){{/servers}}
+  ),{{#externalDocs}}
+  externalDocs = new ExternalDocumentation(
+    description = "{{description}}",
+    url ="{{url}}"
+  ){{/externalDocs}}
 ){{/openAPI}}
 trait OpenApiSpec

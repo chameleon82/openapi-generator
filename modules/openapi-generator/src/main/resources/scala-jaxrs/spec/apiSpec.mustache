@@ -8,21 +8,21 @@ import javax.ws.rs._
 import java.io.InputStream
 {{#useSwaggerAnnotations}}import io.swagger.v3.oas.annotations._
 import io.swagger.v3.oas.annotations.enums._
-import io.swagger.v3.oas.annotations.media.{Content, Schema}
+import io.swagger.v3.oas.annotations.media.{Content, Schema, ArraySchema}
+import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses
 import io.swagger.v3.oas.annotations.tags.{Tag, Tags}
 import io.swagger.v3.oas.annotations.security.{SecurityRequirement, SecurityRequirements}
-
 {{/useSwaggerAnnotations}}
-
+import scala.language.higherKinds
 
 @Path("/{{{baseName}}}"){{#hasConsumes}}
     @Consumes(Array( {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} )){{/hasConsumes}}{{#hasProduces}}
     @Produces(Array( {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} )){{/hasProduces}}
-trait {{classname}}Spec {
+trait {{classname}}Spec[T[_]] {
 {{#operations}}
 {{#operation}}
-{{>apiInterface}}
+{{>apiTrait}}
 {{/operation}}
 }
 {{/operations}}

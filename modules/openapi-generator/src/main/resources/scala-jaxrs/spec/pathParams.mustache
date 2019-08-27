@@ -1,0 +1,2 @@
+{{#isPathParam}}@Parameter(name = "{{{baseName}}}", in = ParameterIn.PATH {{#required}}, required = true{{/required}}, description = "{{{description}}}"{{#allowableValues}}, {{> allowableValues }}{{/allowableValues}}{{#defaultValue}}, defaultValue="{{{defaultValue}}}"{{/defaultValue}})
+      @PathParam("{{baseName}}") {{paramName}}: {{{dataType}}}{{/isPathParam}}

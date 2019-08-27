@@ -1,17 +1,26 @@
 {{>licenseInfo}}
 package {{package}}
 
+{{#useSwaggerAnnotations}}import io.swagger.v3.oas.annotations.media.Schema
+{{/useSwaggerAnnotations}}
 {{#imports}}
 import {{import}}
 {{/imports}}
+{{#useBeanValidation}}
+import javax.validation.constraints._;
+import javax.validation.Valid;
+{{/useBeanValidation}}
 
 {{#models}}
 {{#model}}
-final case class {{classname}} (
+{{#useSwaggerAnnotations}}@Schema(name = "{{name}}", title = "{{title}}", description = "{{description}}"{{#example}}, example = "{{example}}"{{/example}})
+{{/useSwaggerAnnotations}}
+case class {{classname}} (
   {{#vars}}
-  {{#description}}
-  // {{{description}}}
-  {{/description}}
+  {{#useBeanValidation}}
+  {{>beanValidation}}{{/useBeanValidation}}{{#description}}
+  // {{{description}}}{{/description}}{{#useSwaggerAnnotations}}
+  @{{>schema}}{{/useSwaggerAnnotations}}
   {{{name}}}: {{^required}}Option[{{/required}}{{dataType}}{{^required}}] = None{{/required}}{{#hasMore}},{{/hasMore}}
   {{/vars}}
 )

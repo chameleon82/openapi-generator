@@ -1,0 +1,3 @@
+{{#isBodyParam}}@RequestBody(description = "{{{description}}}"{{#required}}, required=true{{/required}}{{#allowableValues}}, {{> allowableValues }}{{/allowableValues}}{{#defaultValue}}, defaultValue="{{{defaultValue}}}"{{/defaultValue}}{{#isListContainer}}, content = Array(
+          new Content(array = new ArraySchema (schema = new Schema(implementation = classOf[User])))
+      ){{/isListContainer}}){{#useBeanValidation}}{{>beanValidation}}{{/useBeanValidation}} {{paramName}}: {{#isListContainer}}Iterable[{{baseType}}]{{/isListContainer}}{{^isListContainer}}{{dataType}}{{/isListContainer}}{{/isBodyParam}}

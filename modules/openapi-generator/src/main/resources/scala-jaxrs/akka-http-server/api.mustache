@@ -3,13 +3,14 @@ package {{package}}
 
 {{#imports}}import {{import}}
 {{/imports}}
+import scala.concurrent.{ExecutionContext, Future}
 
 {{#operations}}
-class {{classname}} extends AbstractApi (
+class {{classname}}(implicit ex: ExecutionContext) extends {{classname}}Spec[Future] (
 ) {
 
 {{#operation}}
-    def {{operationId}} = {}
+    override def {{operationId}}({{#allParams}}{{paramName}}: {{#isListContainer}}Iterable[{{baseType}}]{{/isListContainer}}{{^isListContainer}}{{dataType}}{{/isListContainer}}{{#hasMore}}, {{/hasMore}}{{/allParams}}): Future[{{returnType}}] = ???
 {{/operation}}
 
 }

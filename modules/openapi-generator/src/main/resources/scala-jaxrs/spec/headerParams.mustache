@@ -1,0 +1,2 @@
+{{#isHeaderParam}}@Parameter(name = "{{{baseName}}}", in = ParameterIn.HEADER{{#required}}, required=true{{/required}}, description = "{{{description}}}"{{#allowableValues}}, {{> allowableValues }}{{/allowableValues}}{{#defaultValue}}, defaultValue="{{{defaultValue}}}"{{/defaultValue}})
+      @HeaderParam("{{baseName}}") {{paramName}}: {{#isListContainer}}Iterable[{{baseType}}]{{/isListContainer}}{{^isListContainer}}{{dataType}}{{/isListContainer}}{{/isHeaderParam}}
