@@ -27,6 +27,5 @@ fi
 
 # if you've executed sbt assembly previously it will use that instead.
 export JAVA_OPTS="${JAVA_OPTS} -Xmx1024M -DloggerPath=conf/log4j.properties"
-ags="generate --artifact-id "scala-jaxrs-petstore-spec" -t modules/openapi-generator/src/main/resources/scala-jaxrs/spec -i modules/openapi-generator/src/test/resources/3_0/petstore.yaml -g scala-jaxrs-akka-http-spec -o samples/openapi3/server/petstore/scala-jaxrs-akka-http-spec $@"
-
+ags="generate --artifact-id \"scala-jaxrs-petstore-spec\" -t modules/openapi-generator/src/main/resources/scala-jaxrs/spec -i modules/openapi-generator/src/test/resources/3_0/petstore.yaml -g scala-jaxrs-spec -o samples/openapi3/server/petstore/scala-jaxrs-spec $@"
 java $JAVA_OPTS -jar $executable $ags

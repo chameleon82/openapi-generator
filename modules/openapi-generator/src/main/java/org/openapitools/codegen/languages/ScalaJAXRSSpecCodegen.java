@@ -17,7 +17,7 @@ public class ScalaJAXRSSpecCodegen extends AbstractScalaCodegen {
     private boolean useBeanValidation = true;
 
     public ScalaJAXRSSpecCodegen() {
-        this("generated-code/scala-jaxrs-akka-http-spec");
+        this("generated-code/scala-jaxrs-spec");
     }
 
     public ScalaJAXRSSpecCodegen(String baseOutputFolder) {

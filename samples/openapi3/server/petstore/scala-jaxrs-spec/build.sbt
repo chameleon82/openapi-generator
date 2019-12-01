@@ -1,5 +1,5 @@
 version := ""
-name := "scala-resteasy-petstore-spec"
+name := "scala-jaxrs-petstore-spec"
 organization := ""
 scalaVersion := "2.12.8"
 

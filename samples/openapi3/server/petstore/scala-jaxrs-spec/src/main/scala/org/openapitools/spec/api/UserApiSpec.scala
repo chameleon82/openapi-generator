@@ -16,6 +16,8 @@ import org.openapitools.spec.model.User
 
 import javax.ws.rs._
 import java.io.InputStream
+import javax.validation.Valid
+import javax.validation.constraints._
 import io.swagger.v3.oas.annotations._
 import io.swagger.v3.oas.annotations.enums._
 import io.swagger.v3.oas.annotations.media.{Content, Schema, ArraySchema}
