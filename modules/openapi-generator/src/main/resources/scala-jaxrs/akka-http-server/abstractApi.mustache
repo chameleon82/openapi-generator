@@ -1,9 +1,9 @@
-{{>licenseInfo}}
+{{>spec/licenseInfo}}
 package {{apiPackage}}
 
 import akka.http.scaladsl.server._
 
-abstract class AbstractApi extends Directives {
+abstract class AbstractApi extends Directives with DefaultJsonFormats {
 
   def routes: Route
 

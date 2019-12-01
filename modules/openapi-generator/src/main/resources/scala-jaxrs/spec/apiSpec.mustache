@@ -1,4 +1,4 @@
-{{>licenseInfo}}
+{{>spec/licenseInfo}}
 package {{package}}
 
 {{#imports}}import {{import}}
@@ -24,7 +24,7 @@ import scala.language.higherKinds
 trait {{classname}}Spec[T[_]] {
 {{#operations}}
 {{#operation}}
-{{>apiTrait}}
+{{>spec/apiTrait}}
 {{/operation}}
 }
 {{/operations}}

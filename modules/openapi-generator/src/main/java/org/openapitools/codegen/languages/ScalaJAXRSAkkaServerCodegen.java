@@ -27,10 +27,12 @@ public class ScalaJAXRSAkkaServerCodegen extends ScalaJAXRSSpecCodegen {
         apiTemplateFiles.put("akka-http-server/apiController.mustache", "Controller.scala");
 
         String apiPackageFolder = sourceFolder + File.separator + apiPackage().replace('.', File.separatorChar);
+        String modelPackageFolder = sourceFolder + File.separator + modelPackage().replace('.', File.separatorChar);
 
         supportingFiles.add(new SupportingFile("akka-http-server/build.sbt.mustache", "", "build.sbt"));
         supportingFiles.add(new SupportingFile("akka-http-server/abstractApi.mustache", apiPackageFolder, "AbstractApi.scala"));
         supportingFiles.add(new SupportingFile("akka-http-server/defaultJsonFormats.mustache", apiPackageFolder, "DefaultJsonFormats.scala"));
+        supportingFiles.add(new SupportingFile("akka-http-server/modelFormats.mustache", modelPackageFolder, "ModelFormats.scala"));
 
     }
 

@@ -6,6 +6,7 @@ import org.openapitools.codegen.*;
 import org.openapitools.codegen.meta.GeneratorMetadata;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +32,20 @@ public class ScalaJAXRSSpecCodegen extends AbstractScalaCodegen {
         outputFolder = baseOutputFolder;
         embeddedTemplateDir = templateDir = "";
 
-        apiTemplateFiles.put("apiSpec.mustache", "Spec.scala");
-        modelTemplateFiles.put("model.mustache", ".scala");
+        typeMapping.replace("date-time", "OffsetDateTime");
+        typeMapping.replace("date", "LocalDate");
+        typeMapping.replace("integer", "Int");
+        typeMapping.replace("Date", "LocalDate");
+        typeMapping.replace("DateTime", "OffsetDateTime");
 
-        supportingFiles.add(new SupportingFile("build.sbt.mustache", "", "build.sbt"));
+        importMapping.put("LocalDate", "java.time.LocalDate");
+        importMapping.put("OffsetDateTime", "java.time.OffsetDateTime");
+        importMapping.replace("DateTime", "java.time.OffsetDateTime");
+
+        apiTemplateFiles.put("spec/apiSpec.mustache", "Spec.scala");
+        modelTemplateFiles.put("spec/model.mustache", ".scala");
+
+        supportingFiles.add(new SupportingFile("spec/build.sbt.mustache", "", "build.sbt"));
 
         cliOptions.add(CliOption.newBoolean(USE_SWAGGER_ANNOTATIONS, "Whether to generate Swagger annotations.", useSwaggerAnnotations));
         cliOptions.add(CliOption.newBoolean(USE_BEAN_VALIDATION, "Whether to generate Bean validation annotations.", useBeanValidation));
@@ -47,7 +58,7 @@ public class ScalaJAXRSSpecCodegen extends AbstractScalaCodegen {
 
         additionalProperties.put(CodegenConstants.INVOKER_PACKAGE, invokerPackage);
 
-        supportingFiles.add( new SupportingFile("openApiSpec.mustache",
+        supportingFiles.add( new SupportingFile("spec/openApiSpec.mustache",
                 (sourceFolder + '/' + invokerPackage).replace(".", "/"), "OpenApiSpec.scala"));
 
         if (additionalProperties.containsKey(USE_SWAGGER_ANNOTATIONS)) {
@@ -124,8 +135,10 @@ public class ScalaJAXRSSpecCodegen extends AbstractScalaCodegen {
     @Override
     public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
         super.postProcessModelProperty(model, property);
-        //FIXME example returns "null" instead of null
+         model.vendorExtensions.put("x-size", model.vars.size());
+
         for (CodegenProperty _var: model.vars) {
+            //FIXME example returns "null" instead of null
             _var.example = "null".equals(_var.example) ? null : _var.example ;
         }
 

@@ -1,4 +1,4 @@
-{{>licenseInfo}}
+{{>spec/licenseInfo}}
 package {{package}}
 
 {{#useSwaggerAnnotations}}import io.swagger.v3.oas.annotations.media.Schema
@@ -18,9 +18,9 @@ import javax.validation.Valid;
 case class {{classname}} (
   {{#vars}}
   {{#useBeanValidation}}
-  {{>beanValidation}}{{/useBeanValidation}}{{#description}}
+  {{>spec/beanValidation}}{{/useBeanValidation}}{{#description}}
   // {{{description}}}{{/description}}{{#useSwaggerAnnotations}}
-  @{{>schema}}{{/useSwaggerAnnotations}}
+  @{{>spec/schema}}{{/useSwaggerAnnotations}}
   {{{name}}}: {{^required}}Option[{{/required}}{{dataType}}{{^required}}] = None{{/required}}{{#hasMore}},{{/hasMore}}
   {{/vars}}
 )

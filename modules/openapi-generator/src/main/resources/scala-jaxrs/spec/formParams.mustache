@@ -1,4 +1,4 @@
-{{#isFormParam}}{{^isFile}}@Parameter(name = "{{{baseName}}}"{{#required}}, required=true{{/required}}, description = "{{{description}}}"{{#allowableValues}}, {{> allowableValues }}{{/allowableValues}}{{#defaultValue}}, defaultValue="{{{defaultValue}}}"{{/defaultValue}}){{#vendorExtensions.x-multipart}}
+{{#isFormParam}}{{^isFile}}@Parameter(name = "{{{baseName}}}"{{#required}}, required=true{{/required}}, description = "{{{description}}}"{{#allowableValues}}, {{>spec/allowableValues }}{{/allowableValues}}{{#defaultValue}}, defaultValue="{{{defaultValue}}}"{{/defaultValue}}){{#vendorExtensions.x-multipart}}
       @FormParam("{{baseName}}") {{paramName}}:{{{dataType}}}{{/vendorExtensions.x-multipart}}{{^vendorExtensions.x-multipart}}
       @FormParam("{{baseName}}") {{paramName}}: {{{dataType}}} {{#defaultValue}} @DefaultValue("{{{defaultValue}}}"){{/defaultValue}} {{/vendorExtensions.x-multipart}}{{/isFile}}{{#isFile}}
       @FormParam("{{baseName}}") {{paramName}}File: File{{/isFile}}{{/isFormParam}}

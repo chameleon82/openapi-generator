@@ -23,11 +23,11 @@
       new responses.ApiResponse(
         responseCode = "{{{code}}}",
         description = "{{{message}}}",{{#baseType}}
-        content = Array(new Content({{#isListContainer}}array = new ArraySchema({{/isListContainer}}schema = new Schema(implementation = classOf[{{{baseType}}}]){{#isListContainer}}){{/isListContainer}})){{/baseType}}
+        content = Array(new Content({{#isListContainer}}array = new ArraySchema({{/isListContainer}}schema = new Schema(implementation = classOf[{{{returnType}}}]){{#isListContainer}}){{/isListContainer}})){{/baseType}}
       ){{#hasMore}}, {{/hasMore}}{{/responses}}
     )
   ){{/useSwaggerAnnotations}}
   def {{nickname}}(
   {{#allParams}}
-      {{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}}, {{/hasMore}}
+      {{>spec/queryParams}}{{>spec/pathParams}}{{>spec/headerParams}}{{>spec/bodyParams}}{{>spec/formParams}}{{#hasMore}}, {{/hasMore}}
 {{/allParams}}): T[{{{returnType}}}]

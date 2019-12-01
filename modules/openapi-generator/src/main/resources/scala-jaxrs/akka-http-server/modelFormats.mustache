@@ -1,0 +1,14 @@
+{{>spec/licenseInfo}}
+package {{modelPackage}}
+
+import org.openapitools.server.api.DefaultJsonFormats
+import spray.json._
+
+object ModelFormats extends DefaultJsonFormats {
+
+{{#models}}
+    {{#model}}
+       implicit val format{{classname}}: RootJsonFormat[{{classname}}] = jsonFormat{{vendorExtensions.x-size}}({{classname}})
+    {{/model}}
+{{/models}}
+}

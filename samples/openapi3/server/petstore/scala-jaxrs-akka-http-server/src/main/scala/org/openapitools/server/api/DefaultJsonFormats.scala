@@ -1,4 +1,4 @@
-package {{apiPackage}}
+package org.openapitools.server.api
 
 import spray.json._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
